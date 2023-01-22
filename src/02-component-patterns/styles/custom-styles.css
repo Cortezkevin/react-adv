@@ -22,3 +22,9 @@
     top: 0;
     right: 10px;
 }
+
+.disabled {
+    border-color: grey !important;
+    border-left: white!important;    
+    color: grey !important;
+}
