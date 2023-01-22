@@ -1,12 +1,11 @@
 import { ProductCard } from "../components";
 import '../styles/custom-styles.css';
-
-const product = {
-	id: '1',
-	title: 'Coffe Mug - Card'
-}
+import { products } from "../data/products";
+import { useShoppingCart } from "../hooks/useShoppingCart";
 
 export const ShoppingPage = () => {
+	const { onProductCountChange, shoppingCart } = useShoppingCart();
+
   return (
     <div>
 			<h1>Shopping Store</h1>
@@ -16,32 +15,51 @@ export const ShoppingPage = () => {
 				flexDirection: 'row',
 				flexWrap: 'wrap'
 			}}>
-				<ProductCard 
-					product={ product }
-					className="bg-dark"
-				>
-					<ProductCard.Image
-						className="custom-image"
-					/>
-					<ProductCard.Title 
-						title=""
-						className="text-white"
-					 />
-					<ProductCard.Buttons 
-						className="custom-buttons"
-					/>
-				</ProductCard>
-				<ProductCard 
-					product={ product }					
-				>
-					<ProductCard.Image						
-					/>
-					<ProductCard.Title 
-						title=""						
-					 />
-					<ProductCard.Buttons 						
-					/>
-				</ProductCard>
+				{
+					products.map( product => 
+						<ProductCard 
+							product={ product }
+							className="bg-dark"
+							key={ product.id }							
+							onChange={ onProductCountChange }
+							value={ shoppingCart[product.id]?.count || 0 }
+						>
+							<ProductCard.Image
+								className="custom-image"
+							/>
+							<ProductCard.Title 
+								title=""
+								className="text-white"
+							/>
+							<ProductCard.Buttons 
+								className="custom-buttons"
+							/>
+						</ProductCard>
+					)
+				}
+			</div>
+			<div className="shopping-cart">
+
+				{
+					Object.entries( shoppingCart ).map( ([ key, product ]) => (					
+						<ProductCard 
+							product={ product }
+							className="bg-dark"
+							style={{ width: '100px'}}
+							key={ key }
+							value={ product.count }
+							onChange={ onProductCountChange }
+						>
+							<ProductCard.Image
+								className="custom-image"
+							/>
+							<ProductCard.Buttons 
+								className="custom-buttons"
+								style={{ display: 'flex', justifyContent: 'center' }}
+							/>
+						</ProductCard>
+					 ))
+				}
 			</div>
     </div>
   )
